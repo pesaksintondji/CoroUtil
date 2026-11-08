@@ -22,6 +22,11 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
 
+      # The wrapper's download (services.gradle.org -> GitHub releases) can return 504;
+      # fetch the distribution with retries + mirrors, verified against the official SHA-256.
+      - name: Download Gradle distribution
+        run: bash .github/scripts/fetch-gradle.sh gradle/wrapper/gradle-wrapper.properties
+
       - name: Build CoroUtil (Fabric)
         run: ./gradlew -b build_fabric.gradle build
 
